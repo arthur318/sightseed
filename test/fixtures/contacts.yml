@@ -1,0 +1,23 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  account: one
+  primary: false
+  first_name: MyString
+  last_name: MyString
+  title: MyString
+  phone: MyString
+  email: MyString
+  cultivation_level: 1
+  notes: MyString
+
+two:
+  account: two
+  primary: false
+  first_name: MyString
+  last_name: MyString
+  title: MyString
+  phone: MyString
+  email: MyString
+  cultivation_level: 1
+  notes: MyString
