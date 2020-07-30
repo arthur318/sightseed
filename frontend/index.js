@@ -22,7 +22,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const contactForm = qs('form#contactForm')
     const list = qs("ul.list-group")
     const badge = qs("span#main-badge.badge.badge-pill.badge-primary")
+    // Nav bar
     const accountNav = qs("a#account-button.nav-link")
+    const priorityButton = qe("sort-by-priority")
     const homeButton = qs("a#home-button.nav-link")
     const mainPage = qs("div#main-page.container-fluid")
     const mainTitle = qs('span#page-title')
@@ -368,13 +370,16 @@ document.addEventListener("DOMContentLoaded", () => {
             search: true,
             columns: [{
               field: 'name',
-              title: 'Grant Name'
+              title: 'Grant'
             }, {
+              field: 'stage',
+              title: 'Stage'
+            },{
               field: 'account',
               title: 'Account'
             },{
                 field: 'rank_score',
-                title: 'Priority Score'
+                title: 'Priority'
             }, {
                 field: 'fiscal_year',
                 title: 'FY'
@@ -392,10 +397,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 title: 'Rolling?'
               },{
                 field: 'app_type',
-                title: 'Application Method'
+                title: 'Method'
               },{
                 field: 'fund_size',
-                title: 'Fund Size'
+                title: 'Fund'
               },{
                 field: 'tags',
                 title: 'Tags'
@@ -423,6 +428,8 @@ document.addEventListener("DOMContentLoaded", () => {
     async function createAllPage(){
         let grants = await fetchGrants()
         contentTitle.innerText = "All Opportunities"
+        mainTable2.style.visibility = "visible"
+        list.querySelectorAll('*').forEach(n => n.remove())
         createGrantPage(grants)
     }
    createAllPage()
@@ -478,6 +485,17 @@ document.addEventListener("DOMContentLoaded", () => {
         mainTable2.style.visibility = "hidden"
         listGrants(grants)
     }
+    // Sorted
+    async function createSortedPage(){
+        let grants = await sortByPriority()
+        contentTitle.innerText = "Sorted by Priority Score"
+        mainTable2.style.visibility = "hidden"
+        listGrants(grants)
+    }
+    priorityButton.addEventListener("click", () => createSortedPage())
+
+
+
     chosenot.addEventListener("click", () => createChoseNotPage())
     
 
@@ -496,25 +514,53 @@ document.addEventListener("DOMContentLoaded", () => {
             let li = ce("li")
             li.className = "list-group-item"
             li.innerText = grant.name
+            let spanspace = ce("span")
+            spanspace = "  "
+            let span1 = ce("span")
+            span1.className = "badge badge-dark badge-pill"
+            span1.innerText = `  ${grant.stage}`
+            let span2 = ce("span")
+            span2.className = "badge badge-light badge-pill"
+            span2.innerText = `  ${grant.rank_score}`
+            li.append(spanspace, span1, spanspace, span2)
             list.append(li) 
             li.addEventListener('click', () => {
                 // let show = qe("showGrant")
                 // show.innerText = grant.name
                 
                 modalTitle.innerText = grant.name 
-                
-                
+                modalBody.querySelectorAll('*').forEach(n => n.remove())
+                let ul = ce("ul")
+                ul.className = "list-group"
+                let account = ce("li")
+                account.className = "list-group-item"
+                account.innerText = `Account: ${grant.account}`
+                let stage= ce("li")
+                stage.innerText = `Stage: ${grant.stage}`
+                stage.className = "list-group-item"
+                let priority= ce("li")
+                priority.innerText = `Priority Level: ${grant.rank_score}`
+                priority.className = "list-group-item"
+                let deadline= ce("li")
+                deadline.innerText = `Deadline: ${grant.deadline}`
+                deadline.className = "list-group-item"
+                let ask= ce("li")
+                ask.innerText = `Ask: ${grant.ask_amount}`
+                ask.className = "list-group-item"
+
+
+                ul.append(account, stage, priority, deadline, ask)
                 let form = ce("form")
                 let formgroup = ce("div")
                 formgroup.className = "form-group"
                 let label = ce("label")
                 label.innerText = "Choose grant stage"
                 let select = ce("select")
-                select.className = "form-control form-control-sm"
+                select.className = "form-control"
                 
                 let option1 = ce("option")
                 option1.value = 1
-                option1.innerText = "Prospect"
+                option1.innerText = "Prospects"
                 let option2 = ce("option")
                 option2.value = 2
                 option2.innerText = "Applying"
@@ -536,12 +582,13 @@ document.addEventListener("DOMContentLoaded", () => {
                 submit.type = "submit"
                 submit.className = "btn btn-primary"
                 select.append(option1, option2, option3, option4, option5, option6)
-                formgroup.append(select)
+                formgroup.append(label, select)
                 form.append(formgroup, submit)
-                modalBody.append(form)
+                
 
-                let data = {stage_id: event.target[0].value}
-                submit.addEventListener("click", () => {
+                
+                form.addEventListener("submit", () => {
+                    let data = {stage_id: event.target[0].value}
                     fetch(`http://localhost:3000/api/v1/grants/${grant.id}`, {
                         method: "PATCH",
                         headers: {
@@ -550,8 +597,17 @@ document.addEventListener("DOMContentLoaded", () => {
                         body: JSON.stringify(data)
                     })
                     .then(res => res.json())
+                    .then(updated => {
+                        
+                        // createAllPage()
+                        let success = ce("div")
+                        success.innerText = `${updated.name} updated!` 
+                        modalFooter.append(success)
+                        createAllPage()
+                      
+                    })
                 })
-
+                modalBody.append(ul, form)
                 $("#basicModal").modal('toggle');
             })
         })

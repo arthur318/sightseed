@@ -1,5 +1,5 @@
 class GrantSerializer < ActiveModel::Serializer
-  attributes :name, :stage, :account, :priority_yes, :repeat_yes, :fiscal_year, :ask_type, :deadline, :rolling_yes, :rolling, :app_type, :ask_amount, :source_name, :source_type, :lead_type, :fund_size, :tags, :notes, :link, :rank_score
+  attributes :id, :name, :stage, :account, :priority_yes, :repeat_yes, :fiscal_year, :ask_type, :deadline, :rolling_yes, :rolling, :app_type, :ask_amount, :source_name, :source_type, :lead_type, :fund_size, :tags, :notes, :link, :rank_score
   has_many :sources
 
   def repeat_yes

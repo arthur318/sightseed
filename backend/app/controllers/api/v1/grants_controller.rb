@@ -34,17 +34,17 @@ class Api::V1::GrantsController < ApplicationController
 
 
     def update
-        # byebug
-        instructor = Instructor.find(params[:id])
-        instructor.update(instructor_params)
-        render json: instructor
+        
+        grant = Grant.find(params[:id]) 
+        grant.update(grant_params)
+        render json: grant
+    end
+  
+    def destroy
+        grant = Grant.find(params[:id]) 
+        account.destroy
     end
 
-    # def destroy
-    #     instructor = Instructor.find(params[:id])
-    #     instructor.destroy
-    #     render json: "Instructor deleted!!"
-    # end
 
     private
 
