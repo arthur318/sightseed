@@ -4,10 +4,19 @@ class Grant < ApplicationRecord
   has_many :grant_tags
   has_many :tags, through: :grant_tags
   has_many :sources
-  has_many :contacts, through: :sources
+  accepts_nested_attributes_for :grant_tags
+  accepts_nested_attributes_for :sources
 
   require 'time'
   
+  # add method that creats tags by array
+  def create_tags_by_array(array)
+    array.each do |tag_id| 
+      self.grant_tags.create(tag_id: tag_id)
+    end
+  end
+
+
   # filters
 
   # algorithm if it's already saved

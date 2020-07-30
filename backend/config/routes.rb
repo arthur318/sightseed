@@ -9,6 +9,8 @@ Rails.application.routes.draw do
       resources :accounts
       resources :contacts
       resources :tags
+      resources :grant_tags
+      resources :sources
     end
     namespace :v2 do 
       resources :users

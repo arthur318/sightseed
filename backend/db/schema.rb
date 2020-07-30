@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_07_26_072834) do
+ActiveRecord::Schema.define(version: 2020_07_29_160132) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -87,13 +87,12 @@ ActiveRecord::Schema.define(version: 2020_07_26_072834) do
 
   create_table "sources", force: :cascade do |t|
     t.bigint "grant_id", null: false
-    t.bigint "contact_id", null: false
     t.string "source_type"
     t.string "lead_type"
     t.string "notes"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["contact_id"], name: "index_sources_on_contact_id"
+    t.string "name"
     t.index ["grant_id"], name: "index_sources_on_grant_id"
   end
 
@@ -139,7 +138,6 @@ ActiveRecord::Schema.define(version: 2020_07_26_072834) do
   add_foreign_key "grant_tags", "tags"
   add_foreign_key "grants", "accounts"
   add_foreign_key "grants", "stages"
-  add_foreign_key "sources", "contacts"
   add_foreign_key "sources", "grants"
   add_foreign_key "stages", "pipelines"
   add_foreign_key "tags", "pipelines"

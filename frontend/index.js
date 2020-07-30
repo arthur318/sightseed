@@ -1,17 +1,19 @@
 document.addEventListener("DOMContentLoaded", () => {
-
-
+    // check
     console.log("Front-end js")
-
+    // selectors and creators
     function ce(element){
         return document.createElement(element)
     }
-
     function qs(selector){
         return document.querySelector(selector)
     }
+    function qe(id){
+        return document.getElementById(id)
+    }
+    // Page elements
     const accountSelect = qs("select#selectAccountForContact.form-control")
-    const accountSelectGrant = qs()
+    const accountSelectGrant = qs("select#selectAccountForGrant.form-control")
     const mainContent = qs('div#container-fluid')
     const contentTitle = qs('h1.mt-4')
     const grantForm = qs('form#grantForm')
@@ -19,9 +21,13 @@ document.addEventListener("DOMContentLoaded", () => {
     const contactForm = qs('form#contactForm')
     const list = qs("ul.list-group")
     const badge = qs("span.badge.badge-pill.badge-primary")
+    const accountNav = qs("a#account-button.nav-link")
+    const mainPage = qs("div#main-page.container-fluid")
+    const mainTitle = qs("h1#page-title.mt-4")
+    const mainTable = qs("table#main-table.table-hover.table-sm")
     // get contacts
     async function fetchContacts() {
-        const response = await fetch("http://localhost:3000/api/v1/contactsstages")
+        const response = await fetch("http://localhost:3000/api/v1/contacts")
         let contactsstages = await response.json();
         console.log(contactsstages);
         return contactsstages;
@@ -39,7 +45,20 @@ document.addEventListener("DOMContentLoaded", () => {
         let grants = await response.json();
         console.log(grants);
         return grants;
-
+    }
+    // get a specific grant
+    async function fetchGrant(grant) {
+        const response = await fetch(`http://localhost:3000/api/v1/grants/${grant.id}`)
+        let grants = await response.json();
+        console.log(grant);
+        return grant;
+    }
+    // get last grant id
+    async function fetchLastGrantId(grant) {
+        const response = await fetch("http://localhost:3000/api/v1/grants")
+        let grants = await response.json();
+        console.log(grants);
+        return grants;
     }
     // get accounts
     async function fetchAccounts() {
@@ -86,6 +105,7 @@ document.addEventListener("DOMContentLoaded", () => {
             // option.value = newAccount.id
             // accountSelect.append(option)
             fillContactForm(accountSelect)
+            fillContactForm(accountSelectGrant)
         })
     })
     // fill contact form
@@ -99,8 +119,8 @@ document.addEventListener("DOMContentLoaded", () => {
             node.append(option)
         })
     }
-    fillContactForm(accountSelect)
-
+    fillContactForm(accountSelect);
+    fillContactForm(accountSelectGrant);
     // post contact form
     contactForm.addEventListener("submit", () => {
         event.preventDefault()
@@ -134,8 +154,76 @@ document.addEventListener("DOMContentLoaded", () => {
             // accountSelect.append(option)
         })
     })
+    // Account button
+    accountNav.addEventListener("click", () => {
+        makeAccountPage()
+    })
+    // Make account page
+    async function makeAccountPage() {
+        list.querySelectorAll('*').forEach(n => n.remove())
+        mainTitle.innerText = "Accounts"
 
+        let accounts = await fetchAccounts()
+        badge.innerText = accounts.length
+        while(list.firstChild){
+            list.removeChild(list.firstChild)
+        }
+        accounts.forEach(account => {
+            let li = ce("li")
+            li.className = "list-group-item"
+            li.innerText = account.name
+            // li.type = "button"
+            list.append(li) 
 
+            li.addEventListener('click', () => {
+                let modalTitle = qs("h5#basicModalLabel.modal-title")
+                modalTitle.innerText = account.name   
+                let modalBody = qe("basicModalBody")
+                modalBody.querySelectorAll('*').forEach(n => n.remove())
+                let industry = ce("h5")
+                industry.innerText = `Industry: ${account.industry}`
+                let type = ce("h5")
+                type.innerText = `Account type: ${account.account_type}`
+                let contacts = ce("h5")
+                contacts.innerText = "Contacts"
+                modalBody.append(industry, type, contacts)
+                $("#basicModal").modal('toggle');
+            })
+        })
+        console.log("done")    
+    }
+    // Make Grant table
+    // async function tableGrants() {
+    //     let grants = await fetchGrants()
+    //     mainTable.querySelectorAll('*').forEach(n => n.remove())
+    //     function generateTableHead(table, data) {
+    //         let thead = table.createTHead();
+    //         thead.className = "thead-dark";
+    //         let row = thead.insertRow();
+    //         for (let key of data) {
+    //             let th = document.createElement("th");
+    //             let text = document.createTextNode(key);
+    //             th.appendChild(text)
+    //             row.appendChild(th)
+    //         }
+    //     }
+    //     function generateTable(table, data) {
+    //         for (let element of data) {
+    //           let row = table.insertRow();
+    //           for (key in element) {
+    //             let cell = row.insertCell();
+    //             let text = document.createTextNode(element[key]);
+    //             cell.appendChild(text);
+    //           }
+    //         }
+    //       }
+    //     let table = mainTable
+    //     let data = grants[0].keys
+    //     generateTableHead(table, data)
+    //     generateTable(table, grants)
+
+    // }
+    // tableGrants()
 
 
     // List all the grants
@@ -150,27 +238,63 @@ document.addEventListener("DOMContentLoaded", () => {
             li.className = "list-group-item"
             li.innerText = grant.name
             list.append(li) 
+            li.addEventListener('click', () => {
+                // let show = qe("showGrant")
+                // show.innerText = grant.name
+                let modalTitle = qs("h5#basicModalLabel.modal-title")
+                modalTitle.innerText = grant.name                    
+                $("#basicModal").modal('toggle');
+            })
         })
-        console.log("done")
-        
+        console.log("done")   
     }
 
     listGrants()
-
+    // post grant form
     grantForm.addEventListener("submit", () => {
         event.preventDefault()
+        let formEvent = event.target
+        let env = formEvent[12].checked ? 1 : null 
+        let youth = formEvent[13].checked ? 2 : null 
+        let workforce = formEvent[14].checked ? 3 : null 
+        let food = formEvent[15].checked ? 4 : null 
+        let NYC = formEvent[16].checked ? 5 : null 
+        let EDI = formEvent[17].checked ? 6 : null 
+        let health = formEvent[18].checked ? 7 : null 
+        let energy = formEvent[19].checked ? 8 : null 
+        let community = formEvent[20].checked ? 9 : null 
+        let tagArray = [env, youth, workforce, food, NYC, EDI, health, energy, community]
+        editedArray = tagArray.filter(index => {return index != null})
+        debugger
+
+        // put above into an array
+        // .filter out null values
+
+
         let data = {
             name: event.target[0].value,
-            deadline: event.target[1].value,
-            ask_amount: event.target[2].value, 
-            stage_id: 1,
-            account_id: 1
-            // account: {account_name: "Test"},
-            // account: {account_name: "Test"},
+            priority: event.target[1].checked,
+            stage_id: event.target[2].value, 
+            fiscal_year: event.target[3].value, 
+            account_id: event.target[4].value,
+            repeat: event.target[5].checked,
+            ask_type: event.target[6].value,
+            app_type: event.target[7].value,
+            deadline: event.target[8].value,
+            rolling: event.target[9].checked,
+            ask_amount: event.target[10].value,
+            fund_size: event.target[11].value,            
+            link: event.target[24].value,
+            notes: event.target[25].value,
+            source_name: event.target[21].value,   
+            source_type: event.target[22].value, 
+            lead_type: event.target[23].value,
+            tag_ids: editedArray,
+            source: {name: event.target[21].value, source_type: event.target[22].value, lead_type: event.target[23].value}
             // source:{source_name:"Micah"},
             // tags:{tag_names:[]}
         }
-        // debugger
+
         fetch("http://localhost:3000/api/v1/grants", {
             method: "POST",
             headers: {
@@ -185,10 +309,15 @@ document.addEventListener("DOMContentLoaded", () => {
             li.className = "list-group-item"
             li.innerText = newGrant.name
             list.append(li) 
+            let success = qs("div#successGrant")
+            success.innerText = `${newGrant.name} created!` 
         })
+        
+
+
     })
 
-    // Generate table from 
+    // Generate table
     // function generateTableHead(table) {
     //     let thead = table.createTHead();
     //   }
