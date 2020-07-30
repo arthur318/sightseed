@@ -185,7 +185,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 let type = ce("h5")
                 type.innerText = `Account type: ${account.account_type}`
                 let contacts = ce("h5")
-                contacts.innerText = "Contacts"
+                contacts.innerText = "Contacts:"
                 modalBody.append(industry, type, contacts)
                 $("#basicModal").modal('toggle');
             })

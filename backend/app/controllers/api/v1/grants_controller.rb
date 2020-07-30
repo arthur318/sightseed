@@ -17,7 +17,7 @@ class Api::V1::GrantsController < ApplicationController
         grant = Grant.create(grant_params)
         grant.sources.create(source_params)
         grant.create_tags_by_array(tag_params)
-        
+        grant.save_scores
         render json: grant
     end
 

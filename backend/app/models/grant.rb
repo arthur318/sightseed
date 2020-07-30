@@ -17,7 +17,43 @@ class Grant < ApplicationRecord
   end
 
 
-  # filters
+  # assign all scores
+  def save_scores
+    total = self.total_score
+    alignment = self.alignment
+    value = self.value
+    timing = self.timing
+    relationship = self.relationship
+    self.update(rank_score: total, alignment_score: alignment, relationship_score: relationship, timing_score: timing, value_score: value)  
+  end
+
+  # t.bigint "stage_id", null: false
+  # t.bigint "account_id", null: false
+  # t.string "description"
+  # t.string "fiscal_year"
+  # t.string "ask_type"
+  # t.integer "owner"
+  # t.date "deadline"
+  # t.string "app_type"
+  # t.decimal "ask_amount"
+  # t.decimal "min_amount"
+  # t.decimal "max_amount"
+  # t.decimal "fund_size"
+  # t.string "link"
+  # t.string "notes"
+  # t.datetime "created_at", precision: 6, null: false
+  # t.datetime "updated_at", precision: 6, null: false
+  # t.string "name"
+  # t.boolean "priority", default: false, null: false
+  # t.boolean "rolling", default: false, null: false
+  # t.boolean "repeat", default: false, null: false
+  # t.float "rank_score", default: 0.0, null: false
+  # t.float "timing_score", default: 0.0, null: false
+  # t.float "alignment_score", default: 0.0, null: false
+  # t.float "relationship_score", default: 0.0, null: false
+  # t.float "value_score", default: 0.0, null: false
+  # t.index ["account_id"], name: "index_grants_on_account_id"
+  # t.index ["stage_id"], name: "index_grants_on_stage_id"
 
   # algorithm if it's already saved
   
@@ -118,11 +154,11 @@ class Grant < ApplicationRecord
     end
     case source.source_type
     when "board"
-      score += 1
+      score += 2
     when "executive"
       score += 1
     when "key partner"
-      score += 2
+      score += 1
     else
       score
     end
