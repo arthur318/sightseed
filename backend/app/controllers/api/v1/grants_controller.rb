@@ -16,18 +16,29 @@ class Api::V1::GrantsController < ApplicationController
         # byebug
         grant = Grant.create(grant_params)
         grant.sources.create(source_params)
-        grant.create_tags_by_array(tag_params)
         grant.save_scores
-        render json: grant
+        # byebug
+        grant.create_tags_by_array(tag_params)
+            render json: grant
+        # if tag_params != null
+        #     grant.create_tags_by_array(tag_params)
+        #     render json: grant
+        # else
+        #     # byebug
+        
+        #     render json: grant
+        # end
+        
+        
     end
 
 
-    # def update
-    #     # byebug
-    #     instructor = Instructor.find(params[:id])
-    #     instructor.update(instructor_params)
-    #     render json: instructor
-    # end
+    def update
+        # byebug
+        instructor = Instructor.find(params[:id])
+        instructor.update(instructor_params)
+        render json: instructor
+    end
 
     # def destroy
     #     instructor = Instructor.find(params[:id])

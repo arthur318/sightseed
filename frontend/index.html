@@ -6,7 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.17.1/dist/bootstrap-table.min.css">
     <!-- Our Custom CSS -->
     <link rel="stylesheet" href="style2.css">
     <title>Sightseed Main Page</title>
@@ -18,15 +20,15 @@
         <!-- Sidebar -->
         <div class="bg-light border-right" id="sidebar-wrapper" >
             
-            <div class="sidebar-heading" style="font-weight: bold; font-size: 30px;">sightseed<span><img src="assets/LeafLogo.png" width="30" alt="" class="d-inline-block align-middle mr-2"></span></div>
+            <div class="sidebar-heading bg-light" style="font-weight: bold; font-size: 30px;">sightseed<span><img src="assets/LeafLogo.png" width="30" alt="" class="d-inline-block align-middle mr-2"></span></div>
             <div class="list-group list-group-flush">
                 <div></div>
-                <a href="#" class="list-group-item list-group-item-action bg-light">Prospects</a>
-                <a href="#" class="list-group-item list-group-item-action bg-light">Applying</a>
-                <a href="#" class="list-group-item list-group-item-action bg-light">Submitted</a>
-                <a href="#" class="list-group-item list-group-item-action bg-light">Awarded</a>
-                <a href="#" class="list-group-item list-group-item-action bg-light">Declined</a>
-                <a href="#" class="list-group-item list-group-item-action bg-light">Chose Not To Apply</a>
+                <a href="#" id="prospects" class="list-group-item list-group-item-action bg-light">Prospects</a>
+                <a href="#" id="applying" class="list-group-item list-group-item-action bg-light">Applying</a>
+                <a href="#" id= "submitted" class="list-group-item list-group-item-action bg-light">Submitted</a>
+                <a href="#" id="awarded" class="list-group-item list-group-item-action bg-light">Awarded</a>
+                <a href="#" id="declined" class="list-group-item list-group-item-action bg-light">Declined</a>
+                <a href="#" id="chosenot" class="list-group-item list-group-item-action bg-light">Chose Not To Apply</a>
             </div>
             
         </div>
@@ -101,7 +103,7 @@
                         </div>
                         <div id="basicModalBody" class="modal-body">
                         </div>
-                        <div class="modal-footer">
+                        <div id="basicModalFooter" class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                         <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
                         </div>
@@ -113,7 +115,7 @@
                     <div class="modal-dialog modal-dialog-centered" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
-                            <h5 class="modal-title" id="createAccountModalTitle">Add New Account</h5>
+                            <h5 class="modal-title" id="createAccountModalTitle">Create New Account</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
@@ -121,12 +123,12 @@
                             <div class="modal-body">
                                 <form id="accountForm">
                                     <div class="form-group">
-                                        <label for="inputName">Account Name</label>
-                                        <input type="text" class="form-control" placeholder="Company, organization, etc.">
+                                        <label>Account Name</label>
+                                        <input type="text" id="accountNameInput" class="form-control" placeholder="Company, organization, etc.">
                                     </div>
                                     <div class="form-group">
-                                        <label for="inputDeadline">Industry</label>
-                                        <input type="text" class="form-control" placeholder="Enter industry">
+                                        <label >Industry</label>
+                                        <input type="text" class="form-control" id="accountIndustryInput" placeholder="Enter industry">
                                     </div>
                                     <div class="form-group">
                                         <label for="selectType">Account Type</label>
@@ -138,7 +140,7 @@
                                         </select>
                                     </div>
                                     <div class="form-group form-check">
-                                        <input type="checkbox" class="form-check-input" id="shortlistCheck" value="true">
+                                        <input type="checkbox" class="form-check-input" id="shortlistCheck" value="true" >
                                         <label class="form-check-label" for="shortlistCheck">Shortlist account?</label>
                                         <small id="shortlistHelp" class="form-text text-muted">Doing so will let you filter by important accounts later</small>
                                     </div>
@@ -220,11 +222,281 @@
                         </div>
                     </div>
                 </div>
+                <!-- Create Account Modal -->
+<div class="modal fade" id="updateAccountModal" tabindex="-1" role="dialog" aria-labelledby="updateAccountModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="updateAccountModalTitle">Update Account</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            <div class="modal-body">
+                <form id="updateAccountForm">
+                    <div class="form-group">
+                        <label>Account Name</label>
+                        <input type="text" id="updateAccountNameInput" class="form-control" placeholder="Company, organization, etc.">
+                    </div>
+                    <div class="form-group">
+                        <label >Industry</label>
+                        <input type="text" class="form-control" id="updateAccountIndustryInput" placeholder="Enter industry">
+                    </div>
+                    <div class="form-group">
+                        <label for="updateType">Account Type</label>
+                        <select class="form-control" id="updateType">
+                        <option>corporate</option>
+                        <option>foundation</option>
+                        <option>nonprofit</option>
+                        <option>government</option>
+                        </select>
+                    </div>
+                    <div class="form-group form-check">
+                        <input type="checkbox" class="form-check-input" id="updateShortlistCheck" value="true" >
+                        <label class="form-check-label" for="updateShortlistCheck">Shortlist account?</label>
+                        <small id="shortlistHelp" class="form-text text-muted">Doing so will let you filter by important accounts later</small>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+            <div id ="accountModalFooter" class="modal-footer">
+            <div id ="updateSuccessAccount"></div>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+            
+        </div>
+    </div>
+</div>
+                <!-- Update Grant -->
+                <!-- <div class="modal fade" id="updateGrantModal" tabindex="-1" role="dialog" aria-labelledby="updateGrantModalCenterTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                        <h5 class="modal-title" id="updateGrantModalCenterTitle">Add New Grant</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="grantForm">
+                                <div class="form-group">                               
+                                    <div class="form-row">
+                                        <div class="col">
+                                            <div class="form-group">
+                                                <label>Grant Name</label>
+                                                <input type="text" class="form-control form-control-sm" placeholder="Enter name">
+                                            </div>
+                                        </div>
+                                        <div class='col-3'>
+                                            <div class="form-group form-check">
+                                                <input type="checkbox" class="form-check-input">
+                                                <label class="form-check-label">Priority?</label>
+                                            </div>
+                                        </div>    
+                                        </div>   
+                                <div class="form-group">                               
+                                    <div class="form-row">
+                                        <div class="col">
+                                            <div class="form-group">
+                                                <label>Stage</label>
+                                                <select class="form-control form-control-sm">
+                                                    <option value=1>Prospect</option>
+                                                    <option value=2>Applying</option>
+                                                    <option value=3>Submitted</option>
+                                                    <option value=4>Awarded</option>
+                                                    <option value=5>Declined</option>
+                                                    <option value=6>Chose Not To Apply</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="form-group">
+                                                <label>Fiscal Year</label>
+                                                <input type="text" class="form-control form-control-sm" placeholder="FY21, etc.">
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="form-group">
+                                                <label>Account</label> 
+                                                <select class="form-control form-control-sm" id="selectAccountForGrant"></select>
+                                            </div>
+                                        </div>
+                                        <div class="col-3">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox">
+                                                <label class="form-check-label">Previous funding?</label>
+                                                </div>
+                                        </div>
+                
+                                    </div>
+                                </div>
+                
+                                <div class="form-group">                                    
+                                    <div class="form-row">
+                                        <div class="col">
+                                            <div class="form-group">
+                                                <label>Ask Type</label>
+                                                <select class="form-control form-control-sm">
+                                                    <option>grant-general</option>
+                                                    <option>grant-operations</option>
+                                                    <option>grant-program</option>
+                                                    <option>sponsorsship-event</option>
+                                                    <option>sponsorship-team</option>
+                                                    <option>pro bono</option>
+                                                    <option>other support</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="form-group">
+                                                <label>Application Method</label>
+                                                <select class="form-control form-control-sm">
+                                                    <option>online portal</option>
+                                                    <option>email proposal</option>
+                                                    <option>mail proposal</option>
+                                                    <option>email LOI</option>
+                                                    <option>mail LOI</option>
+                                                    <option>invite only</option>
+                                                    <option>no grant program</option>
+                                                    <option>not provided</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="form-group">
+                                                <label >Deadline</label> 
+                                                <input type="text" class="form-control form-control-sm" placeholder="YYYY-MM-DD">
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="form-group form-check">
+                                                <input class="form-check-input" type="checkbox">
+                                                <label class="form-check-label">Rolling?</label>
+                                                </div>
+                                        </div>
+                                    </div>
+                                </div>    
+                                <div class="form-group">                                    
+                                    <div class="form-row">                                
+                                        <div class="col">
+                                            <div class="form-group">
+                                                <label for="inputAmount">Ask Amount</label>
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text form-control-sm">$</span>
+                                                    </div>                        
+                                                    <input type="text" class="form-control form-control-sm" id="inputAmount" placeholder="1000">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="form-group">
+                                                <label for="inputAmount">Fund Size</label>
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text form-control-sm">$</span>
+                                                    </div>                        
+                                                    <input type="text" class="form-control form-control-sm" id="inputAmount" placeholder="1000">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Focus Areas</label>
+                                    <div class="form-row">   
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" name= "box1" type="checkbox" value=1>
+                                        <label class="form-check-label">environment</label>
+                                      </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" value=2>
+                                        <label class="form-check-label" >youth</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" value=3>
+                                        <label class="form-check-label">workforce development</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" value=4>
+                                        <label class="form-check-label">food</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" value=5>
+                                        <label class="form-check-label">NYC</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" value=6>
+                                        <label class="form-check-label">EDI</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" value=7>
+                                        <label class="form-check-label">health</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" value=8>
+                                        <label class="form-check-label">energy</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" value=9>
+                                        <label class="form-check-label" >community development</label>
+                                    </div>
+                                    </div>
+                                </div> 
+                                <div class="form-group">                                    
+                                    <div class="form-row">                                
+                                        <div class="col">
+                                            <div class="form-group">
+                                                <label>Source name</label>
+                                                <input type="text" class="form-control form-control-sm" placeholder="Name">
+                                            </div> 
+                                        </div>
+                                        <div class="col">
+                                            <div class="form-group">
+                                                <label>Source type</label>
+                                                <select class="form-control form-control-sm">
+                                                    <option>board</option>
+                                                    <option>executive</option>
+                                                    <option>key partner</option>
+                                                </select>
+                                                </div>  
+                                        </div>
+                                        <div class="col">
+                                            <div class="form-group">
+                                                <label>Lead type</label>
+                                                <select class="form-control form-control-sm">
+                                                    <option>suggestion</option>
+                                                    <option>indirect</option>
+                                                    <option>direct</option>
+                                                </select>
+                                            </div>  
+                                        </div>
+                                    </div>
+                                </div>                                                     
+                                <div class="form-group">
+                                    <label>Link</label>
+                                    <input type="text" class="form-control form-control-sm" placeholder="URL">
+                                </div>             
+                                <div class="form-group">
+                                    <label>Notes</label>
+                                    <textarea class="form-control form-control-sm"rows="2"></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </form>
+                        </div>
+                        <div id ="grantModalFooter" class="modal-footer">
+                            <div id ="successGrant"></div>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    
+                    </div>
+                </div> -->
                 <!-- Right Nav Stuff -->
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
                         <li class="nav-item active">
-                            <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                            <a class="nav-link" id="home-button" href="#">Home <span class="sr-only">(current)</span></a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#">Analytics</a>
@@ -259,47 +531,82 @@
             </nav>
       <!-- Main content -->
             <div id="main-page" class="container-fluid">
-              <h1 id="page-title" class="mt-4">Prospects <span class="badge badge-pill badge-primary">0</span></h1>
+              <h1 class="mt-4"><span id="page-title"></span><span> </span><span id="main-badge" class="badge badge-pill badge-primary">0</span></h1>
+              
+              <!-- <div id="charts" visibility="hidden"><canvas id="myChart"></canvas></div> -->
+              <!-- <div>
+
+                <table id="main-table" class="table table-hover table-sm">
+                    <thead class="thead-dark">
+                      <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Grant Name</th>
+                        <th scope="col">Account</th>
+                        <th scope="col">Deadline</th>
+                        <th scope="col">Ask Amount</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr draggable="true" ondragstart="drag(event)"> 
+                        <th scope="row">1</th>
+                        <td>Wells Fargo Regional Grants</td>
+                        <td>Wells Fargo</td>
+                        <td>2020-10-01</td>
+                        <td>$100000</td>
+                      </tr>
+                      <tr>
+                        <th scope="row">2</th>
+                        <td>LyftUp Community Grants</td>
+                        <td>Lyft</td>
+                        <td>Rolling</td>
+                        <td>$5000</td>
+                      </tr>
+                    </tbody>
+                  </table>
+            
+            </div> -->
+
+
+
 
               <div id="showGrant">
 
               </div>
               
-              <ul class="list-group">
-                
+              <ul class="list-group">  
               </ul>
               <br>
-              <table id="main-table" class="table table-hover table-sm">
-                <thead class="thead-dark">
-                  <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Grant Name</th>
-                    <th scope="col">Account</th>
-                    <th scope="col">Deadline</th>
-                    <th scope="col">Ask Amount</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr draggable="true" ondragstart="drag(event)"> 
-                    <th scope="row">1</th>
-                    <td>Wells Fargo Regional Grants</td>
-                    <td>Wells Fargo</td>
-                    <td>2020-10-01</td>
-                    <td>$100000</td>
-                  </tr>
-                  <tr>
-                    <th scope="row">2</th>
-                    <td>LyftUp Community Grants</td>
-                    <td>Lyft</td>
-                    <td>Rolling</td>
-                    <td>$5000</td>
-                  </tr>
-                </tbody>
-              </table>
-            
 
-            
+              <div id="tablediv">
+              <table id="table" 
+              data-detail-view="true" 
+              data-toolbar="#toolbar"
+              data-cache="false"
+                data-toolbar="#toolbar"
+                data-buttons-align="left"
+                data-show-refresh="true"
+                data-show-toggle="true"
+                data-show-fullscreen="true"
+                data-show-columns="true"
+                data-show-columns-toggle-all="true"
+                data-detail-view="true"
+                data-click-to-select="true"
+                data-detail-formatter="detailFormatter"
+                data-minimum-count-columns="2"
+                data-show-pagination-switch="true"
+                data-pagination="true"
+                data-page-size="25"
+                data-id-field="id"
+                data-page-list="[10, 25, 50, 100, all]"
+                data-show-footer="true"
+                data-custom-sort="customSort"
+                data-response-handler="responseHandler">
+  
+            </table>
             </div>
+            
+            
+            
           </div>
           <!-- /#page-content-wrapper -->
       
@@ -544,11 +851,21 @@
 
 
         <!-- Bootstrap core JavaScript -->
-        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
-        <script src="index.js"></script>
+        <!-- <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+        <script src="https://unpkg.com/bootstrap-table@1.17.1/dist/bootstrap-table.min.js"></script> -->
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+        <script src="https://unpkg.com/bootstrap-table@1.17.1/dist/bootstrap-table.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
         
+        <script src="index.js"></script>
+
       </body>
 </html>
 
