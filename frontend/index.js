@@ -1,3 +1,6 @@
+const APIURL = "https://sightseed-api.herokuapp.com/api/v1"
+const GRANTAPI = APIURL+"/"+"grants"
+
 document.addEventListener("DOMContentLoaded", () => {
     // check
     console.log("Front-end js")
@@ -44,35 +47,35 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // get contacts
     async function fetchContacts() {
-        let response = await fetch("http://localhost:3000/api/v1/contacts")
+        let response = await fetch(APIURL+"/contacts")
         let contactsstages = await response.json();
         console.log(contactsstages);
         return contactsstages;
     }
     // get stages
     async function fetchStages() {
-        let response = await fetch("http://localhost:3000/api/v1/stages")
+        let response = await fetch(APIURL+"/stages")
         let stages = await response.json();
         console.log(stages);
         return stages;
     }
     // get grants
     async function fetchGrants() {
-        let response = await fetch("http://localhost:3000/api/v1/grants")
+        let response = await fetch(GRANTAPI)
         let grants = await response.json();
         console.log(grants);
         return grants;
     }
     // get a specific grant
     async function fetchGrant(grant) {
-        let response = await fetch(`http://localhost:3000/api/v1/grants/${grant.id}`)
+        let response = await fetch(GRANTAPI+`/${grant.id}`)
         let grants = await response.json();
         console.log(grant);
         return grant;
     }
     // filter by grant stage
     async function filterGrantStage(stage) {
-        let response = await fetch("http://localhost:3000/api/v1/grants")
+        let response = await fetch(GRANTAPI)
         let grants = await response.json();
         filtered = grants.filter(g => g.stage === stage)
         console.log(filtered);
@@ -91,7 +94,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }  
         // sort by priority score
         async function sortByPriority() {
-            let response = await fetch("http://localhost:3000/api/v1/grants")
+            let response = await fetch(GRANTAPI)
             let grants = await response.json();
             filtered = grants.sort(GetSortOrder("rank_score"));
             console.log(filtered);
@@ -100,7 +103,7 @@ document.addEventListener("DOMContentLoaded", () => {
         
     // get accounts
     async function fetchAccounts() {
-        let response = await fetch("http://localhost:3000/api/v1/accounts")
+        let response = await fetch(APIURL + "/accounts")
         let accounts = await response.json();
         console.log(accounts);
         return accounts;
@@ -118,7 +121,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     // async function make chart page
     async function makeChartPage() {
-        let response = await fetch("http://localhost:3000/api/v1/grants")
+        let response = await fetch(GRANTAPI)
         let grants = await response.json();
         allprospects = grants.filter(g => g.stage === "Prospects")
         allapplying = grants.filter(g => g.stage === "Applying")
@@ -167,7 +170,7 @@ document.addEventListener("DOMContentLoaded", () => {
             shortlist: event.target[3].checked
         }
         // debugger
-        fetch("http://localhost:3000/api/v1/accounts", {
+        fetch(APIURL + "/accounts", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -215,7 +218,7 @@ document.addEventListener("DOMContentLoaded", () => {
             notes: event.target[8].value
         }
         // debugger
-        fetch("http://localhost:3000/api/v1/contacts", {
+        fetch(APIURL+"/contacts", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -322,7 +325,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     shortlist: event.target[3].checked
                 }
                 // debugger
-                fetch(`http://localhost:3000/api/v1/accounts/${account.id}`, {
+                fetch(APIURL+`/accounts/${account.id}`, {
                     method: "PATCH",
                     headers: {
                         "Content-Type": "application/json"
@@ -634,7 +637,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 
                 form.addEventListener("submit", () => {
                     let data = {stage_id: event.target[0].value}
-                    fetch(`http://localhost:3000/api/v1/grants/${grant.id}`, {
+                    fetch(GRANTAPI+`/${grant.id}`, {
                         method: "PATCH",
                         headers: {
                             "Content-Type": "application/json"
@@ -705,7 +708,7 @@ document.addEventListener("DOMContentLoaded", () => {
             // tags:{tag_names:[]}
         }
 
-        fetch("http://localhost:3000/api/v1/grants", {
+        fetch(GRANTAPI, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
