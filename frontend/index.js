@@ -26,6 +26,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const accountNav = qs("a#account-button.nav-link")
     const priorityButton = qe("sort-by-priority")
     const homeButton = qs("a#home-button.nav-link")
+    const analyticsButton = qe("analytics-button")
     const mainPage = qs("div#main-page.container-fluid")
     const mainTitle = qs('span#page-title')
     const mainTable2 = qs("div#tablediv")
@@ -43,35 +44,35 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // get contacts
     async function fetchContacts() {
-        const response = await fetch("http://localhost:3000/api/v1/contacts")
+        let response = await fetch("http://localhost:3000/api/v1/contacts")
         let contactsstages = await response.json();
         console.log(contactsstages);
         return contactsstages;
     }
     // get stages
     async function fetchStages() {
-        const response = await fetch("http://localhost:3000/api/v1/stages")
+        let response = await fetch("http://localhost:3000/api/v1/stages")
         let stages = await response.json();
         console.log(stages);
         return stages;
     }
     // get grants
     async function fetchGrants() {
-        const response = await fetch("http://localhost:3000/api/v1/grants")
+        let response = await fetch("http://localhost:3000/api/v1/grants")
         let grants = await response.json();
         console.log(grants);
         return grants;
     }
     // get a specific grant
     async function fetchGrant(grant) {
-        const response = await fetch(`http://localhost:3000/api/v1/grants/${grant.id}`)
+        let response = await fetch(`http://localhost:3000/api/v1/grants/${grant.id}`)
         let grants = await response.json();
         console.log(grant);
         return grant;
     }
     // filter by grant stage
     async function filterGrantStage(stage) {
-        const response = await fetch("http://localhost:3000/api/v1/grants")
+        let response = await fetch("http://localhost:3000/api/v1/grants")
         let grants = await response.json();
         filtered = grants.filter(g => g.stage === stage)
         console.log(filtered);
@@ -90,7 +91,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }  
         // sort by priority score
         async function sortByPriority() {
-            const response = await fetch("http://localhost:3000/api/v1/grants")
+            let response = await fetch("http://localhost:3000/api/v1/grants")
             let grants = await response.json();
             filtered = grants.sort(GetSortOrder("rank_score"));
             console.log(filtered);
@@ -99,7 +100,7 @@ document.addEventListener("DOMContentLoaded", () => {
         
     // get accounts
     async function fetchAccounts() {
-        const response = await fetch("http://localhost:3000/api/v1/accounts")
+        let response = await fetch("http://localhost:3000/api/v1/accounts")
         let accounts = await response.json();
         console.log(accounts);
         return accounts;
@@ -115,6 +116,47 @@ document.addEventListener("DOMContentLoaded", () => {
         // debugger
         return accountNames
     }
+    // async function make chart page
+    async function makeChartPage() {
+        let response = await fetch("http://localhost:3000/api/v1/grants")
+        let grants = await response.json();
+        allprospects = grants.filter(g => g.stage === "Prospects")
+        allapplying = grants.filter(g => g.stage === "Applying")
+        allsubmitted = grants.filter(g => g.stage === "Submitted")
+        allawarded = grants.filter(g => g.stage === "Awarded")
+        alldeclined = grants.filter(g => g.stage === "Declined")
+        allchosenot = grants.filter(g => g.stage === "Chose Not To Apply")
+        new Chart(document.getElementById("bar-chart"), {
+            type: 'bar',
+            data: {
+              labels: ["Prospects", "Applying", "Submitted", "Awarded", "Declined", "Chose Not To Apply"],
+              datasets: [
+                {
+                  backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850"],
+                  data: [allprospects.length,allapplying.length,allsubmitted.length, allawarded.length, alldeclined.length,allchosenot.length]
+                }
+              ]
+            },
+            options: {
+              legend: { display: false },
+              title: {
+                display: true,
+                text: 'Opportunities By Stage'
+              },
+              scales: {
+                x: {
+                    offset: true
+                }
+            }
+            }
+        });
+        
+        console.log(allprospects.length);
+         
+    }
+    
+    // makeChartPage()
+
     // post account form
     accountForm.addEventListener("submit", () => {
         event.preventDefault()
@@ -365,6 +407,7 @@ document.addEventListener("DOMContentLoaded", () => {
         // let grants = await fetchGrants()
         // mainTable2.style.visibility = "visible"
         badge.innerText = grants.length
+        makeChartPage()
         $('#table').bootstrapTable({
             pagination: true,
             search: true,
@@ -505,6 +548,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // List all the grants
     async function listGrants(grants) {
         // let grants = await fetchGrants()
+        makeChartPage()
         list.querySelectorAll('*').forEach(n => n.remove())
         badge.innerText = grants.length
         // while(list.firstChild){
@@ -530,6 +574,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 
                 modalTitle.innerText = grant.name 
                 modalBody.querySelectorAll('*').forEach(n => n.remove())
+                modalFooter.querySelectorAll('*').forEach(n => n.remove())
                 let ul = ce("ul")
                 ul.className = "list-group"
                 let account = ce("li")
@@ -604,7 +649,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         success.innerText = `${updated.name} updated!` 
                         modalFooter.append(success)
                         createAllPage()
-                      
+                        
                     })
                 })
                 modalBody.append(ul, form)
