@@ -1,0 +1,452 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <!-- Our Custom CSS -->
+    <link rel="stylesheet" href="style2.css">
+    <title>Sightseed Main Page</title>
+    <!-- Drag/Drop -->
+  <!-- Body -->
+<body>      
+    <div class="d-flex" id="wrapper">
+        <!-- Sidebar -->
+        <div class="bg-light border-right" id="sidebar-wrapper" >
+            <div class="sidebar-heading" style="font-weight: bold;">sightseed</div>
+            <div class="list-group list-group-flush">
+                <div></div>
+                <a href="#" class="list-group-item list-group-item-action bg-light">Prospects</a>
+                <a href="#" class="list-group-item list-group-item-action bg-light">Applying</a>
+                <a href="#" class="list-group-item list-group-item-action bg-light">Submitted</a>
+                <a href="#" class="list-group-item list-group-item-action bg-light">Awarded</a>
+                <a href="#" class="list-group-item list-group-item-action bg-light">Declined</a>
+                <a href="#" class="list-group-item list-group-item-action bg-light">Chose Not To Apply</a>
+            </div>
+        </div>
+        <!-- /#sidebar-wrapper -->
+      
+        <!-- Page Content -->
+        <div id="page-content-wrapper">
+            <!-- Nav Bar -->
+            <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+                <div class="btn-group" role="group" aria-label="Basic example">
+                    <!-- Buttons to trigger modals -->
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createGrantModal">New Grant</button>
+                    <div class="btn-group" role="group">
+                        <button id="btnGroupDrop1" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          Create
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                            <button class="dropdown-item" data-toggle="modal" data-target="#createAccountModal">New Account</button>
+                            <button class="dropdown-item" data-toggle="modal" data-target="#createContactModal">New Contact</button>
+                            <button class="dropdown-item" data-toggle="modal" data-target="#createGrantModal">New Grant</button>
+                        </div>
+                      </div>
+                </div>
+                <!-- Create Grant  Modal -->
+                <div class="modal fade" id="createGrantModal" tabindex="-1" role="dialog" aria-labelledby="createGrantModalCenterTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                        <h5 class="modal-title" id="createGrantModalCenterTitle">Add New Grant</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="grantForm">
+                                <div class="form-group">                               
+                                    <div class="form-row">
+                                        <div class="col">
+                                            <div class="form-group">
+                                                <label>Grant Name</label>
+                                                <input type="text" class="form-control form-control-sm" placeholder="Enter name">
+                                            </div>
+                                        </div>
+                                        <div class='col-3'>
+                                            <div class="form-group form-check">
+                                                <input type="checkbox" class="form-check-input">
+                                                <label class="form-check-label">Priority?</label>
+                                            </div>
+                                        </div>    
+                                       </div>   
+                                <div class="form-group">                               
+                                    <div class="form-row">
+                                        <div class="col">
+                                            <div class="form-group">
+                                                <label>Stage</label>
+                                                <select class="form-control form-control-sm">
+                                                    <option value=1>Prospect</option>
+                                                    <option value=2>Applying</option>
+                                                    <option value=3>Submitted</option>
+                                                    <option value=4>Awarded</option>
+                                                    <option value=5>Declined</option>
+                                                    <option value=6>Chose Not To Apply</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="form-group">
+                                                <label>Fiscal Year</label>
+                                                <input type="text" class="form-control form-control-sm" placeholder="FY21, etc.">
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="form-group">
+                                                <label>Account</label> 
+                                                <select class="form-control form-control-sm" id="selectAccountForGrant"></select>
+                                            </div>
+                                        </div>
+                                        <div class="col-3">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox">
+                                                <label class="form-check-label">Previous funding?</label>
+                                              </div>
+                                        </div>
+    
+                                    </div>
+                                </div>
+
+                                <div class="form-group">                                    
+                                    <div class="form-row">
+                                        <div class="col">
+                                            <div class="form-group">
+                                                <label>Ask Type</label>
+                                                <select class="form-control form-control-sm">
+                                                    <option>grant-general</option>
+                                                    <option>grant-operations</option>
+                                                    <option>grant-program</option>
+                                                    <option>sponsorsship-event</option>
+                                                    <option>sponsorship-team</option>
+                                                    <option>pro bono</option>
+                                                    <option>other support</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="form-group">
+                                                <label>Application Method</label>
+                                                <select class="form-control form-control-sm">
+                                                    <option>online portal</option>
+                                                    <option>email proposal</option>
+                                                    <option>mail proposal</option>
+                                                    <option>email LOI</option>
+                                                    <option>mail LOI</option>
+                                                    <option>invite only</option>
+                                                    <option>no grant program</option>
+                                                    <option>not provided</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="form-group">
+                                                <label >Deadline</label> 
+                                                <input type="text" class="form-control form-control-sm" placeholder="YYYY-MM-DD">
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="form-group form-check">
+                                                <input class="form-check-input" type="checkbox">
+                                                <label class="form-check-label">Rolling?</label>
+                                              </div>
+                                        </div>
+                                    </div>
+                                </div>    
+                                <div class="form-group">                                    
+                                    <div class="form-row">                                
+                                        <div class="col">
+                                            <div class="form-group">
+                                                <label for="inputAmount">Ask Amount</label>
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text form-control-sm">$</span>
+                                                    </div>                        
+                                                    <input type="text" class="form-control form-control-sm" id="inputAmount" placeholder="1000">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="form-group">
+                                                <label for="inputAmount">Fund Size</label>
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text form-control-sm">$</span>
+                                                    </div>                        
+                                                    <input type="text" class="form-control form-control-sm" id="inputAmount" placeholder="1000">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Focus Areas</label>
+                                
+                                    <select multiple class="form-control form-control-sm" id="exampleFormControlSelect2">
+                                        <option value=1>environment</option>
+                                        <option value=2>youth</option>
+                                        <option value=3>workforce development</option>
+                                        <option value=4>food</option>
+                                        <option value=5>NYC</option>
+                                        <option value=6>EDI</option>
+                                        <option value=7>health</option>
+                                        <option value=8>energy</option>
+                                        <option value=9>community development</option>
+                                    </select>
+                                    <small class="form-text text-muted">Hold down Ctrl(PC) or Cmd(Mac) to select multiple</small>
+                                </div> 
+                                <div class="form-group">                                    
+                                    <div class="form-row">                                
+                                        <div class="col">
+                                            <div class="form-group">
+                                                <label>Source name</label>
+                                                <input type="text" class="form-control form-control-sm" placeholder="Name">
+                                            </div> 
+                                        </div>
+                                        <div class="col">
+                                            <div class="form-group">
+                                                <label>Source type</label>
+                                                <select class="form-control form-control-sm">
+                                                    <option>board</option>
+                                                    <option>executive</option>
+                                                    <option>key partner</option>
+                                                </select>
+                                              </div>  
+                                        </div>
+                                        <div class="col">
+                                            <div class="form-group">
+                                                <label>Lead type</label>
+                                                <select class="form-control form-control-sm">
+                                                    <option>suggestion</option>
+                                                  <option>indirect</option>
+                                                  <option>direct</option>
+                                                </select>
+                                            </div>  
+                                        </div>
+                                    </div>
+                                </div>                                                     
+                                <div class="form-group">
+                                    <label>Link</label>
+                                    <input type="text" class="form-control form-control-sm" placeholder="URL">
+                                </div>             
+                                <div class="form-group">
+                                    <label>Notes</label>
+                                    <textarea class="form-control form-control-sm"rows="2"></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </form>
+                        </div>
+                        <div id ="grantModalFooter" class="modal-footer">
+                            <div id ="successGrant"></div>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    
+                    </div>
+                </div>
+                <!-- Create Account Modal -->
+                <div class="modal fade" id="createAccountModal" tabindex="-1" role="dialog" aria-labelledby="createAccountModalCenterTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                            <h5 class="modal-title" id="createAccountModalTitle">Add New Account</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            </div>
+                            <div class="modal-body">
+                                <form id="accountForm">
+                                    <div class="form-group">
+                                        <label for="inputName">Account Name</label>
+                                        <input type="text" class="form-control" placeholder="Company, organization, etc.">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="inputDeadline">Industry</label>
+                                        <input type="text" class="form-control" placeholder="Enter industry">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="selectType">Account Type</label>
+                                        <select class="form-control" id="selectType">
+                                          <option>corporate</option>
+                                          <option>foundation</option>
+                                          <option>nonprofit</option>
+                                          <option>government</option>
+                                        </select>
+                                      </div>
+                                    <div class="form-group form-check">
+                                        <input type="checkbox" class="form-check-input" id="shortlistCheck" value="true">
+                                        <label class="form-check-label" for="shortlistCheck">Shortlist account?</label>
+                                        <small id="shortlistHelp" class="form-text text-muted">Shortlisting will let you filter by important accounts later</small>
+                                      </div>
+                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                </form>
+                            </div>
+                            <div id ="accountModalFooter" class="modal-footer">
+                            <div id ="successAccount"></div>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Create Contact Modal -->
+                <div class="modal fade" id="createContactModal" tabindex="-1" role="dialog" aria-labelledby="createContactModalCenterTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                            <h5 class="modal-title" id="createContactModalTitle">Add New Contact</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="contactForm">
+                                <div class="form-group">
+                                    <label for="selectAccountForContact">Account</label>
+                                    <select class="form-control form-control-sm" id="selectAccountForContact"></select>
+                                </div>
+                                <div class="form-group form-check">
+                                    <input type="checkbox" class="form-check-input form-control-sm" id="primaryContactCheck" value="true">
+                                    <label class="form-check-label" for="primaryContactCheck">Primary contact?</label>
+                                    <small id="shortlistHelp" class="form-text text-muted">Set as primary contact for this account</small>
+                                </div>
+                                <div class="form-group">
+                                    <label>Name</label>
+                                    <div class="form-row">
+                                        <div class="col">
+                                        <input type="text" class="form-control form-control-sm" placeholder="First name">
+                                        </div>
+                                        <div class="col">
+                                        <input type="text" class="form-control form-control-sm" placeholder="Last name">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="selectType">Contact Type</label>
+                                    <select class="form-control form-control-sm" id="selectType">                                        
+                                      <option>employee</option>
+                                      <option>foundation</option>
+                                      <option>decision-maker</option>
+                                    </select>
+                                    <small id="shortlistHelp" class="form-text text-muted">What is their role in the organization?</small>
+                                  </div>
+                                <div class="form-group">
+                                    <label>Title</label>
+                                    <input type="text" class="form-control form-control-sm" placeholder="Title">
+                                </div>
+                                <div class="form-group">
+                                    <label>Email</label>
+                                    <input type="text" class="form-control form-control-sm" placeholder="Email">
+                                </div>
+                                <div class="form-group">
+                                    <label>Phone</label>
+                                    <input type="text" class="form-control form-control-sm" placeholder="000-000-0000">
+                                </div>                
+                                <div class="form-group">
+                                    <label>Notes</label>
+                                    <textarea class="form-control form-control-sm"rows="2"></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </form>
+                        </div>
+                        <div id ="contactModalFooter" class="modal-footer">
+                            <div id ="successContact"></div>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Right Nav Stuff -->
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
+                        <li class="nav-item active">
+                            <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Analytics</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Filter
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="#">Sort By Priority</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="#">High-Value Grants</a>
+                            <a class="dropdown-item" href="#">Board Member Leads</a>
+                            </div>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Accounts</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                User
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="#">Profile</a>
+                                <a class="dropdown-item" href="#">Settings</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="#">Log Out</a>
+                            </div>
+                        </li>
+                    </ul>
+              </div>
+            </nav>
+      <!-- Main content -->
+            <div id="main-content" class="container-fluid">
+              <h1 class="mt-4">Prospects <span class="badge badge-pill badge-primary">0</span></h1>
+              <ul class="list-group">
+                <p>Prospective Grant Opportunities</p>
+              </ul>
+              <br>
+              <table class="table table-hover table-sm">
+                <thead class="thead-dark">
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Grant Name</th>
+                    <th scope="col">Account</th>
+                    <th scope="col">Deadline</th>
+                    <th scope="col">Ask Amount</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr draggable="true" ondragstart="drag(event)"> 
+                    <th scope="row">1</th>
+                    <td>Wells Fargo Regional Grants</td>
+                    <td>Wells Fargo</td>
+                    <td>2020-10-01</td>
+                    <td>$100000</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">2</th>
+                    <td>LyftUp Community Grants</td>
+                    <td>Lyft</td>
+                    <td>Rolling</td>
+                    <td>$5000</td>
+                  </tr>
+                </tbody>
+              </table>
+            
+            
+            
+            </div>
+          </div>
+          <!-- /#page-content-wrapper -->
+      
+    </div>
+    
+        
+        <!-- /#wrapper -->
+      
+
+
+        <!-- Bootstrap core JavaScript -->
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+        <script src="index.js"></script>
+      </body>
+</html>
