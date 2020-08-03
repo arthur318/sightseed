@@ -15,36 +15,41 @@ document.addEventListener("DOMContentLoaded", () => {
         return document.getElementById(id)
     }
     // Page elements
-    const accountSelect = qs("select#selectAccountForContact.form-control")
-    const accountSelectGrant = qs("select#selectAccountForGrant.form-control")
-    const mainContent = qs('div#container-fluid')
-    const contentTitle = qs('span#page-title')
-    const grantForm = qs('form#grantForm')
-    const accountForm = qs('form#accountForm')
-    const updateAccountForm = qs('form#updateAccountForm')
-    const contactForm = qs('form#contactForm')
-    const list = qs("ul.list-group")
-    const badge = qs("span#main-badge.badge.badge-pill.badge-primary")
-    // Nav bar
-    const accountNav = qs("a#account-button.nav-link")
-    const priorityButton = qe("sort-by-priority")
-    const homeButton = qs("a#home-button.nav-link")
-    const analyticsButton = qe("analytics-button")
-    const mainPage = qs("div#main-page.container-fluid")
-    const mainTitle = qs('span#page-title')
-    const mainTable2 = qs("div#tablediv")
-    const mainTable = qe("main-table")
-    const modalTitle = qs("h5#basicModalLabel.modal-title")
-    const modalBody = qe("basicModalBody")
-    const modalFooter = qe("basicModalFooter")
-    //  stage buttons
+    // Side Bar
     const prospects = qe("prospects")
     const applying = qe("applying")
     const submitted = qe("submitted")
     const awarded = qe("awarded")
     const declined = qe("declined")
     const chosenot = qe("chosenot")
+    // Forms
+    const grantForm = qs('form#grantForm')
+    const accountForm = qs('form#accountForm')
+    const updateAccountForm = qs('form#updateAccountForm')
+    const contactForm = qs('form#contactForm')
+    // Nav bar
+    const accountNav = qs("a#account-button.nav-link")
+    const priorityButton = qe("sort-by-priority")
+    const homeButton = qs("a#home-button.nav-link")
+    const analyticsButton = qe("analytics-button")
+    // Account select form
+    const accountSelect = qs("select#selectAccountForContact.form-control")
+    const accountSelectGrant = qs("select#selectAccountForGrant.form-control")
+    // Main page
+    const list = qs("ul.list-group")
+    const badge = qs("span#main-badge.badge.badge-pill.badge-primary")
+    const mainPage = qs("div#main-page.container-fluid")
+    const mainTitle = qs('span#page-title')
+    const mainTable2 = qs("div#tablediv")
+    const mainTable = qe("main-table")
+    const mainContent = qs('div#container-fluid')
+    const contentTitle = qs('span#page-title')
+    // Empty modal
+    const modalTitle = qs("h5#basicModalLabel.modal-title")
+    const modalBody = qe("basicModalBody")
+    const modalFooter = qe("basicModalFooter")
 
+    // API GET requests
     // get contacts
     async function fetchContacts() {
         let response = await fetch(APIURL+"/contacts")
@@ -92,14 +97,14 @@ document.addEventListener("DOMContentLoaded", () => {
             return 0;    
         }    
     }  
-        // sort by priority score
-        async function sortByPriority() {
-            let response = await fetch(GRANTAPI)
-            let grants = await response.json();
-            filtered = grants.sort(GetSortOrder("rank_score"));
-            console.log(filtered);
-            return filtered;   
-        }
+    // sort by priority score
+    async function sortByPriority() {
+        let response = await fetch(GRANTAPI)
+        let grants = await response.json();
+        filtered = grants.sort(GetSortOrder("rank_score"));
+        console.log(filtered);
+        return filtered;   
+    }
         
     // get accounts
     async function fetchAccounts() {
