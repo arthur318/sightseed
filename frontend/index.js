@@ -1,3 +1,6 @@
+const APIURL = "https://sightseed-api.herokuapp.com/api/v1"
+const GRANTAPI = APIURL+"/"+"grants"
+
 document.addEventListener("DOMContentLoaded", () => {
     // check
     console.log("Front-end js")
@@ -12,67 +15,72 @@ document.addEventListener("DOMContentLoaded", () => {
         return document.getElementById(id)
     }
     // Page elements
-    const accountSelect = qs("select#selectAccountForContact.form-control")
-    const accountSelectGrant = qs("select#selectAccountForGrant.form-control")
-    const mainContent = qs('div#container-fluid')
-    const contentTitle = qs('span#page-title')
-    const grantForm = qs('form#grantForm')
-    const accountForm = qs('form#accountForm')
-    const updateAccountForm = qs('form#updateAccountForm')
-    const contactForm = qs('form#contactForm')
-    const list = qs("ul.list-group")
-    const badge = qs("span#main-badge.badge.badge-pill.badge-primary")
-    // Nav bar
-    const accountNav = qs("a#account-button.nav-link")
-    const priorityButton = qe("sort-by-priority")
-    const homeButton = qs("a#home-button.nav-link")
-    const analyticsButton = qe("analytics-button")
-    const mainPage = qs("div#main-page.container-fluid")
-    const mainTitle = qs('span#page-title')
-    const mainTable2 = qs("div#tablediv")
-    const mainTable = qe("main-table")
-    const modalTitle = qs("h5#basicModalLabel.modal-title")
-    const modalBody = qe("basicModalBody")
-    const modalFooter = qe("basicModalFooter")
-    //  stage buttons
+    // Side Bar
     const prospects = qe("prospects")
     const applying = qe("applying")
     const submitted = qe("submitted")
     const awarded = qe("awarded")
     const declined = qe("declined")
     const chosenot = qe("chosenot")
+    // Forms
+    const grantForm = qs('form#grantForm')
+    const accountForm = qs('form#accountForm')
+    const updateAccountForm = qs('form#updateAccountForm')
+    const contactForm = qs('form#contactForm')
+    // Nav bar
+    const accountNav = qs("a#account-button.nav-link")
+    const priorityButton = qe("sort-by-priority")
+    const homeButton = qs("a#home-button.nav-link")
+    const analyticsButton = qe("analytics-button")
+    // Account select form
+    const accountSelect = qs("select#selectAccountForContact.form-control")
+    const accountSelectGrant = qs("select#selectAccountForGrant.form-control")
+    // Main page
+    const list = qs("ul.list-group")
+    const badge = qs("span#main-badge.badge.badge-pill.badge-primary")
+    const mainPage = qs("div#main-page.container-fluid")
+    const mainTitle = qs('span#page-title')
+    const mainTable2 = qs("div#tablediv")
+    const mainTable = qe("main-table")
+    const mainContent = qs('div#container-fluid')
+    const contentTitle = qs('span#page-title')
+    // Empty modal
+    const modalTitle = qs("h5#basicModalLabel.modal-title")
+    const modalBody = qe("basicModalBody")
+    const modalFooter = qe("basicModalFooter")
 
+    // API GET requests
     // get contacts
     async function fetchContacts() {
-        let response = await fetch("http://localhost:3000/api/v1/contacts")
+        let response = await fetch(APIURL+"/contacts")
         let contactsstages = await response.json();
         console.log(contactsstages);
         return contactsstages;
     }
     // get stages
     async function fetchStages() {
-        let response = await fetch("http://localhost:3000/api/v1/stages")
+        let response = await fetch(APIURL+"/stages")
         let stages = await response.json();
         console.log(stages);
         return stages;
     }
     // get grants
     async function fetchGrants() {
-        let response = await fetch("http://localhost:3000/api/v1/grants")
+        let response = await fetch(GRANTAPI)
         let grants = await response.json();
         console.log(grants);
         return grants;
     }
     // get a specific grant
     async function fetchGrant(grant) {
-        let response = await fetch(`http://localhost:3000/api/v1/grants/${grant.id}`)
+        let response = await fetch(GRANTAPI+`/${grant.id}`)
         let grants = await response.json();
         console.log(grant);
         return grant;
     }
     // filter by grant stage
     async function filterGrantStage(stage) {
-        let response = await fetch("http://localhost:3000/api/v1/grants")
+        let response = await fetch(GRANTAPI)
         let grants = await response.json();
         filtered = grants.filter(g => g.stage === stage)
         console.log(filtered);
@@ -89,18 +97,18 @@ document.addEventListener("DOMContentLoaded", () => {
             return 0;    
         }    
     }  
-        // sort by priority score
-        async function sortByPriority() {
-            let response = await fetch("http://localhost:3000/api/v1/grants")
-            let grants = await response.json();
-            filtered = grants.sort(GetSortOrder("rank_score"));
-            console.log(filtered);
-            return filtered;   
-        }
+    // sort by priority score
+    async function sortByPriority() {
+        let response = await fetch(GRANTAPI)
+        let grants = await response.json();
+        filtered = grants.sort(GetSortOrder("rank_score"));
+        console.log(filtered);
+        return filtered;   
+    }
         
     // get accounts
     async function fetchAccounts() {
-        let response = await fetch("http://localhost:3000/api/v1/accounts")
+        let response = await fetch(APIURL + "/accounts")
         let accounts = await response.json();
         console.log(accounts);
         return accounts;
@@ -118,7 +126,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     // async function make chart page
     async function makeChartPage() {
-        let response = await fetch("http://localhost:3000/api/v1/grants")
+        let response = await fetch(GRANTAPI)
         let grants = await response.json();
         allprospects = grants.filter(g => g.stage === "Prospects")
         allapplying = grants.filter(g => g.stage === "Applying")
@@ -167,7 +175,7 @@ document.addEventListener("DOMContentLoaded", () => {
             shortlist: event.target[3].checked
         }
         // debugger
-        fetch("http://localhost:3000/api/v1/accounts", {
+        fetch(APIURL + "/accounts", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -215,7 +223,7 @@ document.addEventListener("DOMContentLoaded", () => {
             notes: event.target[8].value
         }
         // debugger
-        fetch("http://localhost:3000/api/v1/contacts", {
+        fetch(APIURL+"/contacts", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -322,7 +330,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     shortlist: event.target[3].checked
                 }
                 // debugger
-                fetch(`http://localhost:3000/api/v1/accounts/${account.id}`, {
+                fetch(APIURL+`/accounts/${account.id}`, {
                     method: "PATCH",
                     headers: {
                         "Content-Type": "application/json"
@@ -634,7 +642,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 
                 form.addEventListener("submit", () => {
                     let data = {stage_id: event.target[0].value}
-                    fetch(`http://localhost:3000/api/v1/grants/${grant.id}`, {
+                    fetch(GRANTAPI+`/${grant.id}`, {
                         method: "PATCH",
                         headers: {
                             "Content-Type": "application/json"
@@ -705,7 +713,7 @@ document.addEventListener("DOMContentLoaded", () => {
             // tags:{tag_names:[]}
         }
 
-        fetch("http://localhost:3000/api/v1/grants", {
+        fetch(GRANTAPI, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
