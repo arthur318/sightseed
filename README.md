@@ -1,24 +1,14 @@
-# README
+# sightseed
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Sightseed helps grantseekers track and manage funding opportunities with ease and accessibility. 
 
-Things you may want to cover:
+## Usage
 
-* Ruby version
+You can currently access a beta demo of Sightseed [here](https://arthur318.github.io/sightseed/frontend/)
 
-* System dependencies
+## Contributing
+Contributors are welcome. For suggestions, please open an issue first to discuss what you would like to add/change.
 
-* Configuration
 
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+## License
+[LICENSE.md](/LICENSE.md)
